@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<title><%= title %></title>
+	<meta name="keywords"    content="">
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+	<meta http-equiv="Cache-Control" content="no-siteapp" />
+	<link rel="stylesheet" for-data="css" href="/static_dev/css/global.css">
+	<!-- @foreach(css) -->
+	<link rel="stylesheet" for-data="css" href="<%= item %>">
+	<!-- @endforeach -->
+</head>
+<body>
+	<!-- 主干区域 -->
+	<t-soft></t-soft>
+
+	<!-- 脚本文件 -->
+	<link rel="stylesheet" for-data="css" href="/static_dev/bll/bll.js">
+	<!-- @foreach(js) -->
+	<script src="<%= item %>"></script>
+	<!-- @endforeach -->
+</body>
+</html>
