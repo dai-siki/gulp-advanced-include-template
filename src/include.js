@@ -6,6 +6,7 @@ const RE_SOFT_TAG = /<t-soft>([\S\s]*)?<\/t-soft>/gi;
 const RE_VARIABLE = /<%=(.+?)%>/gi;
 const RE_FOREACH = /<!-- @foreach\(([^)]*?)\) -->([\S\s]*?)<!-- @endforeach -->/gi;
 
+// 解析标签属性
 function parseAttributes(tag) {
 	var arr, key, value, matches, attributes;
 
@@ -21,29 +22,7 @@ function parseAttributes(tag) {
 	return attributes;
 }
 
-function includeTag(cwd, contents, getFileContent) {
-	return contents.replace(RE_INCLUDE_TAG, function (tag, $1, $2) {
-		var attributes, filePath, result, fileContent;
-
-		attributes = parseAttributes($1);
-
-		// src is required
-		if (!attributes.src) throw new Error('src is required for <include> tag');
-
-		filePath = path.join(cwd, attributes.src);
-		fileContent = getFileContent(filePath);
-		result = applyForeach(fileContent, attributes);
-		result = applyVariables(result, attributes);
-		result = applySoft(result, $2);
-
-		if (RE_INCLUDE_TAG.test(result)) {
-			return includeTag(path.dirname(filePath), result, getFileContent);
-		} else {
-			return result;
-		}
-	});
-}
-
+// 替换变量
 function applyVariables(str, attributes) {
 	return str.replace(RE_VARIABLE, function (_, key) {
 		const trimKey = key.trim();
@@ -51,6 +30,7 @@ function applyVariables(str, attributes) {
 	});
 }
 
+// 替换占位区域
 function applySoft(str, cnt) {
 	return str.replace(RE_SOFT_TAG, function (_, $1) {
 		if(cnt == ''){
@@ -61,6 +41,7 @@ function applySoft(str, cnt) {
 	});
 }
 
+// 替换循环声明区域
 function applyForeach(str, attributes) {
 	return str.replace(RE_FOREACH, function (_, $1, $2) {
 		const key = $1.trim();
@@ -79,4 +60,28 @@ function applyForeach(str, attributes) {
 	});
 }
 
-module.exports = includeTag;
+// 主函数
+function include(cwd, contents, getFileContent) {
+	return contents.replace(RE_INCLUDE_TAG, function (tag, $1, $2) {
+		var attributes, filePath, result, fileContent;
+
+		attributes = parseAttributes($1);
+
+		// src is required
+		if (!attributes.src) throw new Error('src is required for <t-include> tag');
+
+		filePath = path.join(cwd, attributes.src);
+		fileContent = getFileContent(filePath);
+		result = applyForeach(fileContent, attributes);
+		result = applyVariables(result, attributes);
+		result = applySoft(result, $2);
+
+		if (RE_INCLUDE_TAG.test(result)) {
+			return include(path.dirname(filePath), result, getFileContent);
+		} else {
+			return result;
+		}
+	});
+}
+
+module.exports = include;

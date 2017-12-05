@@ -1,4 +1,4 @@
-const includeTag = require('./includeTag');
+const include = require('./include');
 const fs = require('fs');
 
 module.exports = (cwd, contents) => {
@@ -6,5 +6,5 @@ module.exports = (cwd, contents) => {
 		return fs.readFileSync(filePath).toString();
 	};
 
-	return includeTag(cwd, contents, getFileContent);
+	return include(cwd, contents, getFileContent);
 };
