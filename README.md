@@ -1,9 +1,9 @@
 # gulp-advanced-include-template
-** Easiest way to extend or include html file using gulp. **
+Easiest way to extend or include html file using gulp.
 
 ## example
 
-** gulpfile.js **
+gulpfile.js
 ```js
 const gulp = require('gulp');
 const includeTemplate = require('gulp-advanced-include-template');
@@ -16,7 +16,7 @@ gulp.task('test', function() {
 });
 ```
 
-** index.html **
+index.html
 ```html
 <t-include src="./layout.html"
 	title="gulp-advanced-include-template"
@@ -28,7 +28,7 @@ gulp.task('test', function() {
 </t-include>
 ```
 
-** layout.html **
+layout.html
 ```html
 <!DOCTYPE html>
 <html>
@@ -49,7 +49,7 @@ gulp.task('test', function() {
 </html>
 ```
 
-** index-parsed.html **
+index-parsed.html
 ```html
 <html>
 <head>
