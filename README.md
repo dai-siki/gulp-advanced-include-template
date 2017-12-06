@@ -39,8 +39,8 @@ layout.html
 	<!-- @endforeach -->
 </head>
 <body>
-	<!-- soft area -->
-	<t-soft></t-soft>
+	<!-- slot area -->
+	<t-slot></t-slot>
 
 	<!-- @foreach(js) -->
 	<script src="<%= item %>"></script>

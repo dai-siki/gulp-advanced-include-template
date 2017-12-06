@@ -1,6 +1,6 @@
 {
   "name": "gulp-advanced-include-template",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "extend or include html file using gulp",
   "main": "src/index.js",
   "scripts": {

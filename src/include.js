@@ -2,7 +2,7 @@ const path = require('path');
 
 const RE_ATTRIBUTES = /(\S+)=["']?((?:.(?!["']?\s+(?:\S+)=|[>"']))+.)["']?/gi;
 const RE_INCLUDE_TAG = /<t-include([\S\s]*?)>([\S\s]*?)<\/t-include>/gi;
-const RE_SOFT_TAG = /<t-soft>([\S\s]*)?<\/t-soft>/gi;
+const RE_SOFT_TAG = /<t-slot>([\S\s]*)?<\/t-slot>/gi;
 const RE_VARIABLE = /<%=(.+?)%>/gi;
 const RE_FOREACH = /<!-- @foreach\(([^)]*?)\) -->([\S\s]*?)<!-- @endforeach -->/gi;
 
@@ -31,7 +31,7 @@ function applyVariables(str, attributes) {
 }
 
 // 替换占位区域
-function applySoft(str, cnt) {
+function applySlot(str, cnt) {
 	return str.replace(RE_SOFT_TAG, function (_, $1) {
 		if(cnt == ''){
 			return $1;
@@ -74,7 +74,7 @@ function include(cwd, contents, getFileContent) {
 		fileContent = getFileContent(filePath);
 		result = applyForeach(fileContent, attributes);
 		result = applyVariables(result, attributes);
-		result = applySoft(result, $2);
+		result = applySlot(result, $2);
 
 		if (RE_INCLUDE_TAG.test(result)) {
 			return include(path.dirname(filePath), result, getFileContent);
